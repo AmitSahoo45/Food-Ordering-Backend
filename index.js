@@ -4,7 +4,13 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
-const { VendorRouter } = require('./routes')
+const {
+    VendorRouter,
+    CustomerRouter,
+    MenuRouter
+} = require('./routes')
+
+const auth = require('./middleware/auth')
 
 const app = express();
 
@@ -24,7 +30,10 @@ app.get('/', (req, res) => {
     res.send('Hello World')
 })
 
-app.use('/vendor', VendorRouter);
+app.use('/vendor', VendorRouter)
+app.use('/customer', CustomerRouter)
+app.use('/menu', auth, MenuRouter)
+
 
 const PORT = process.env.PORT || 5000;
 

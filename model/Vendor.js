@@ -42,11 +42,16 @@ const vendorSchema = mongoose.Schema({
         minlength: [100, 'Description must be at least 100 characters'],
         maxlength: [300, 'Description cannot exceed 300 characters'],
     },
-    createdAt: {
-        type: Date,
-        default: new Date()
+    menus: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Menu'
+    }],
+    Orders: {
+        type: Number,
+        default: 0,
+        max: 10
     }
-});
+}, { timestamps: true });
 
 const Vendor = mongoose.model('Vendor', vendorSchema);
 
