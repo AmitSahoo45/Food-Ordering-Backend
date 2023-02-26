@@ -1,4 +1,4 @@
-const { Order, Vendor, Customer, Menu } = require('../model');
+const { Order, Vendor, Customer } = require('../model');
 const { StatusCodes } = require('http-status-codes')
 const { mongoose } = require('mongoose')
 
@@ -63,20 +63,17 @@ const getOrderById = async (req, res) => {
 const getOrdersByVendor = async (req, res) => {
     try {
         const userid = req.userId;
+        const page = Number(req.query.page) || 1;
+        const limit = Number(req.query.limit) || 15;
+        const Index = (page - 1) * limit;
+        const totalDocuments = await Order.countDocuments({ vendor: userid });
 
-        const { page, limit } = req.query;
-        const options = {
-            page: parseInt(page, 10) || 1,
-            limit: parseInt(limit, 10) || 15,
-            populate: {
-                path: 'user',
-                select: 'name email address phone'
-            }
-        }
+        const orders = await Order.find({ vendor: userid })
+            .populate('user', 'name email address phone')
+            .skip(Index)
+            .limit(limit);
 
-        const orders = await Order.paginate({ vendor: userid }, options);
-
-        return res.status(StatusCodes.OK).json({ orders });
+        res.status(200).json({ orders, totalPages: Math.ceil(totalDocuments / limit), currentPage: page })
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Something went wrong" });
     }
@@ -85,20 +82,17 @@ const getOrdersByVendor = async (req, res) => {
 const getOrdersByCustomer = async (req, res) => {
     try {
         const userid = req.userId;
+        const page = Number(req.query.page) || 1;
+        const limit = Number(req.query.limit) || 15;
+        const Index = (page - 1) * limit;
+        const total = await Order.countDocuments({ user: userid });
 
-        const { page, limit } = req.query;
-        const options = {
-            page: parseInt(page, 10) || 1,
-            limit: parseInt(limit, 10) || 15,
-            populate: {
-                path: 'vendor',
-                select: 'name email address phone'
-            }
-        }
+        const orders = await Order.find({ user: userid })
+            .populate('vendor', 'name email address phone')
+            .skip(Index)
+            .limit(limit);
 
-        const orders = await Order.paginate({ user: userid }, options);
-
-        return res.status(StatusCodes.OK).json({ orders });
+        res.status(200).json({ orders, totalPages: Math.ceil(total / limit), currentPage: page })
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Something went wrong" });
     }
@@ -106,19 +100,18 @@ const getOrdersByCustomer = async (req, res) => {
 
 const ViewIncomingOrders = async (req, res) => {
     try {
-        const { page, limit } = req.query;
-        const options = {
-            page: parseInt(page, 10) || 1,
-            limit: parseInt(limit, 10) || 15,
-            populate: {
-                path: 'user',
-                select: 'name email address phone'
-            }
-        }
+        const userid = req.userId;
+        const page = Number(req.query.page) || 1;
+        const limit = Number(req.query.limit) || 15;
+        const Index = (page - 1) * limit;
+        const total = await Order.countDocuments({ vendor: userid, status: 'Placed' });
 
-        const orders = await Order.paginate({ vendor: req.userId, status: 'Placed' }, options);
+        const orders = await Order.find({ vendor: userid, status: 'Placed' })
+            .populate('user', 'name email address phone')
+            .skip(Index)
+            .limit(limit);
 
-        return res.status(StatusCodes.OK).json({ orders });
+        res.status(200).json({ orders, totalPages: Math.ceil(total / limit), currentPage: page })
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Something went wrong" });
     }

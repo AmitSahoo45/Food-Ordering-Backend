@@ -3,20 +3,24 @@ const routes = express.Router();
 
 const {
     register,
-    GetSingleVendor,
     Login,
-    searchVendors,
+    GetVendor,
+    ShowVendors,
+    forgotPassword,
     UpdateVendorDetails,
-    UpdateVendorPassword
+    UpdateVendorPassword,
+    MenuOfVendor
 } = require('../controllers/Vendor');
 
 const auth = require('../middleware/auth');
 
 routes.post('/register', register);
-routes.get('/', GetSingleVendor)
 routes.post('/login', Login);
+routes.get('/search', ShowVendors)
+routes.get('/:id', GetVendor);
 routes.patch('/details/update', auth, UpdateVendorDetails);
-routes.get('/search', auth, searchVendors);
-
+routes.get('/forgot-password', auth, forgotPassword)
+routes.patch('/password/update', auth, UpdateVendorPassword);
+routes.get('/menu/:id', MenuOfVendor);
 
 module.exports = routes;

@@ -7,7 +7,8 @@ require('dotenv').config();
 const {
     VendorRouter,
     CustomerRouter,
-    MenuRouter
+    MenuRouter,
+    OrderRouter
 } = require('./routes')
 
 const auth = require('./middleware/auth')
@@ -33,6 +34,7 @@ app.get('/', (req, res) => {
 app.use('/vendor', VendorRouter)
 app.use('/customer', CustomerRouter)
 app.use('/menu', auth, MenuRouter)
+app.use('/order', auth, OrderRouter)
 
 
 const PORT = process.env.PORT || 5000;

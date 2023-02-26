@@ -1,3 +1,42 @@
+## Controllers
+
+- [Customer.js](#customerjs)
+- [Order.js](#orderjs)
+- [Vendor.js](#vendorjs)
+
+# Customer.js
+- CustomerRegister - <br/>
+a) The customer registers by passing the  name, email, phone, address, city, state, password through req.body<br/>
+b) First it is checked if there already exists an account with the same email or not. If exists then it returns an error else it proceeds<br/>
+c) The password is hashed using bcrypt and then the customer is registered<br/>
+d) The customer is registered and the JWT token is generated whose validity is for 30 days<br/>
+
+- CustomerLogin - <br/>
+a) The customer logs in by passing the email and password through req.body<br/>
+b) First it is checked if the customer exists or not. If not then it returns an error else it proceeds<br/>
+c) The password is matched with the hashed password using bcrypt and then the customer is logged in<br/>
+d) After successful login, the JWT token is generated whose validity is for 30 days<br/>
+
+- UpdateCustomerDetails - <br/>
+a) The customer can update his/her details by passing the name, phone, address, city, state through req.body<br/>
+b) The id of the customer is passed through req.userId<br/>
+c) Only the Customer can update his/her details and nobody else has the authority to do that<br/>
+
+- getCustomerById - <br/>
+a) The customer can get his/her details by passing the id of the customer as `_id` through req.params<br/>
+b) Either the Customer or the Vendor can get the details of the customer<br/>
+
+- forgotPassword - <br/>
+a) For this we can use the Nodemailer package<br/>
+b) The customer passes the email through it's req.body<br/>
+c) Then an OTP is generated and sent to the customer's email. The OTP is also sent to the frontend for verification. 
+   **P.S - I can do it in a more secure way. Like creating a seperate Model for storing the OTP in the backend and building seperate controllers for handling the OTP requests rather than sending the OTP to the frontend which can result in a security breach, but since its just a prototype and I'm not building for a top MNC/firm, I ain't doing that :)**
+<br/>
+
+- updatePassword - <br/>
+a) The OTP that has been sent to the frontend shall be checked first. If both the user entered OTP and the OTP sent from Server will be correct then only this request should be sent<br/>
+b) The customer can update his/her password by passing the new password through req.body<br/>
+
 # Order.js
 
 - PlaceOrder - <br/>
@@ -61,5 +100,50 @@ e) In the req.body, the status of the order that is desired to be seen is passed
 a) The vendor can view all the incoming orders<br/>
 b) The vendor can access to all the orders whose status is 'Placed', and perform the action on it.
 c) The vendor's id is passed through req.userId. Along with that the user will also send page and limit through the req.query to implement the pagination feature.
+
+# Vendor.js
+
+- register - <br/>
+a) The Vendor can register by passing the name, email, phone, address, city, state, password, description
+b) The email has to be unique, so if the email is already found in the database then an error message will be sent to the frontend<br/>
+c) The password is hashed using bcrypt<br/>
+d) A Token is generated using JWT whose validity is 30 days and the response is sent to the user.
+
+- login - <br/>
+a) The Vendor can login by passing the email and password<br/>
+b) The email is checked if it exists in the database or not<br/>
+c) If the email exists then the password is checked if it matches with the password in the database or not<br/>
+d) If the password matches then a token is generated using JWT whose validity is 30 days and the response is sent to the user<br/>
+
+- UpdateVendorDetails - <br/>
+a) The Vendor can update his/her details by passing the name, phone, address, city, state, password, description
+b) The email has to be unique, so if the email is already found in the database then an error message will be sent to the frontend<br/>
+
+- forgotPassword - <br/>
+a) For this we can use the Nodemailer package<br/>
+b) The customer passes the email through it's req.body<br/>
+c) Then an OTP is generated and sent to the customer's email. The OTP is also sent to the frontend for verification. 
+   **P.S - I can do it in a more secure way. Like creating a seperate Model for storing the OTP in the backend and building seperate controllers for handling the OTP requests rather than sending the OTP to the frontend which can result in a security breach, but since its just a prototype and I'm not building for a top MNC/firm, I ain't doing that :)**
+<br/>
+
+- UpdateVendorPassword - <br/>
+a) The OTP that has been sent to the frontend shall be checked first. If both the user entered OTP and the OTP sent from Server will be correct then only this request should be sent<br/>
+b) The customer can update his/her password by passing the new password through req.body<br/>
+
+- GetSingleVendor - <br/>
+a) This is used for fetching the details of the vendor. The id of the vendor is passed through req.params<br/>
+b) For this Authentication is not required<br/>
+c) The response will be sent back with the details of the vendor as requested from the client side.<br/>
+d) The request sent will also have the populated data of all the menu items of the vendor<br/>
+
+- ShowVendors - <br/>
+a) This is a search function. Through the req.query, either of city or name or both is passed to the server.
+b) Appropriately the response will be sent back to the frontend.<br/>
+c) **For this Authentication is not required**<br/>
+
+- MenuOfVendor - <br/>
+a) This is used for fetching the menu of the vendor. The id of the vendor is passed through req.params<br/>
+b) **For this Authentication is not required**<br/>
+c) All the Menu items that the Vendor has set up for it's Restaurant will be sent back to the frontend.<br/>
 
 
