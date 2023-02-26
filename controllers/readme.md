@@ -179,5 +179,13 @@ b) **This is used for fetching all the dishes of the vendor**<br/>
 c) **No Authenication is required for this**<br/>
 
 - ToggleFoodAvailability - <br/>
-a) The id of the  is passed through the req.params<br/>
+a) The id of the Menu is passed through the req.params<br/>
+b) The availability of the menu is toggled<br/>
+c) This can only be done by the Vendor that has set the menu<br/>
+
+- getMenuByCategory - <br/>
+a) This provides to get the menu of the Vendor/Restaurant by category<br/>
+b) The category is passed through the req.query<br/>
+c) The VendorId is passed through the req.userId<br/>
+d) The response will be sent back to the frontend with the menu items of the Vendor/Restaurant that are of the category that is passed through the req.query<br/>
 

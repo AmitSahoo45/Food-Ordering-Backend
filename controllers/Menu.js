@@ -103,6 +103,8 @@ const ToggleFoodAvailability = async (req, res) => {
             return res.status(StatusCodes.NOT_FOUND).json({ message: '4 - No dish with that id' })
 
         const dish = await Menu.findById(id)
+        if (dish?._id != req.userId)
+            return res.status(StatusCodes.UNAUTHORIZED).json({ message: 'Unauthorized' })
 
         dish.available = !dish.available
 
@@ -117,10 +119,10 @@ const ToggleFoodAvailability = async (req, res) => {
 const getMenuByCategory = async (req, res) => {
     try {
         const { category } = req.query
+        const VendorId = req.userId
 
-        const menu = await Menu.find({ category: { $regex: new RegExp(category, 'i') } })
-
-        res.status(StatusCodes.OK).json({ message: 'Menu fetched successfully', menu })
+        const menus = await Menu.find({ category, restaurant: VendorId })
+        res.status(StatusCodes.OK).json({ message: 'Menu fetched successfully', menus })
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).json({ message: error.message })
     }
