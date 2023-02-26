@@ -1,11 +1,11 @@
 ## Regarding the controllers 
-**Within the controllers there is a readme.md file that provides documentation to all the controllers**
+**Within the controllers folder there is a readme.md file that provides documentation to all the controllers**
 
 ## Regarding the models
-**Within the models there is a readme.md file that provides documentation to all the models**
+**Within the models folder there is a readme.md file that provides documentation to all the models**
 
 ## Regarding the Routes
-**Within the routes there is a readme.md file that provides documentation to all the routes**
+**Within the routes folder there is a readme.md file that provides documentation to all the routes**
 
 
 ---
