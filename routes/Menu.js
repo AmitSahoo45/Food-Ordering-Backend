@@ -10,12 +10,12 @@ const { addingDish,
     getMenuByCategory
 } = require('../controllers/Menu')
 
-routes.post('/add', addingDish);
-routes.delete('/delete/:id', deletingDish);
-routes.patch('/update/:id', updatingDish);
+routes.post('/add', auth, addingDish);
+routes.delete('/delete/:id', auth, deletingDish);
+routes.patch('/update/:id', auth, updatingDish);
 routes.get('/get/:id', gettingDish);
 routes.get('/', gettingAllDishes);
-routes.patch('/toggle/:id', ToggleFoodAvailability);
+routes.patch('/toggle/:id', auth, ToggleFoodAvailability);
 routes.get('/filter/cat', getMenuByCategory);
 
 module.exports = routes;

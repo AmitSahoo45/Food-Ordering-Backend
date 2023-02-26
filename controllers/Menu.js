@@ -88,11 +88,7 @@ const gettingDish = async (req, res) => {
 const gettingAllDishes = async (req, res) => {
     try {
         const { VendorId } = req.body
-        console.log(VendorId,req.userId)
-        console.log(typeof VendorId,typeof req.userId)
-
         const dishes = await Menu.find({ restaurant: VendorId })
-
         res.status(StatusCodes.OK).json({ message: 'Dishes fetched successfully', dishes })
     } catch (error) {
         res.status(StatusCodes.BAD_REQUEST).json({ message: error.message })

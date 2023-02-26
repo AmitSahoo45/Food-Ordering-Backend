@@ -33,7 +33,7 @@ app.get('/', (req, res) => {
 
 app.use('/vendor', VendorRouter)
 app.use('/customer', CustomerRouter)
-app.use('/menu', auth, MenuRouter)
+app.use('/menu', MenuRouter)
 app.use('/order', auth, OrderRouter)
 
 

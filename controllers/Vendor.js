@@ -4,6 +4,7 @@ const { StatusCodes } = require('http-status-codes')
 
 const Vendor = require('../model/Vendor');
 const { sendOTP } = require('../config/email');
+const { Menu } = require('../model');
 
 const register = async (req, res) => {
     const { name, email, phone, address, city, state, password, description } = req.body
@@ -151,7 +152,14 @@ const ShowVendors = async (req, res) => {
 
 const MenuOfVendor = async (req, res) => {
     try {
+        const { id } = req.params
 
+        const menus = await Menu.find({ vendor: id })
+
+        if (!menus)
+            return res.status(StatusCodes.NOT_FOUND).json({ message: 'Menu not found' });
+
+        res.status(StatusCodes.OK).json({ success: true, result: menus });
     } catch (error) {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: 'Something went wrong' });
     }

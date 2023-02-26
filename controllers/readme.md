@@ -3,6 +3,7 @@
 - [Customer.js](#customerjs)
 - [Order.js](#orderjs)
 - [Vendor.js](#vendorjs)
+- [Menu.js](#menujs)
 
 # Customer.js
 - CustomerRegister - <br/>
@@ -146,4 +147,37 @@ a) This is used for fetching the menu of the vendor. The id of the vendor is pas
 b) **For this Authentication is not required**<br/>
 c) All the Menu items that the Vendor has set up for it's Restaurant will be sent back to the frontend.<br/>
 
+
+# Menu.js
+
+- addingDish - <br/>
+a) The id of the vendor is passed through the req.params<br/>
+b) After validating the vendor, the menu item is added to the database<br/>
+c) The foodName, foodDescription, foodPrice, foodImage, and category is passed through the req.body<br/>
+d) After that the newly created menu is pushed to the Vendor's menu array and the Vendor is saved<br/>
+e) The response will be sent back to the frontend with the newly created menu item<br/>
+
+- deletingDish - <br/>
+a) The id of the vendor is passed through the req.params<br/>
+b) After validating the vendor, the menu item is deleted from the database<br/>
+c) After removal of the menu, it's id is also removed from the Vendor's menu array and the Vendor is saved<br/>
+
+- updatingDish - <br/>
+a) The id of the vendor is passed through the req.params<br/>
+b) Through the req.body, the foodName, foodDescription, foodPrice, foodImage, category is passed. <br/>
+c) After validating the vendor, the menu item is updated in the database<br/>
+
+- gettingDish - <br/>
+a) The id of the vendor is passed through the req.params<br/>
+b) **This is used for fetching a single dish**<br/>
+c) **No Authenication is required for this**<br/>
+
+- gettingAllDishes - 
+a) The VendorId is passed through the req.body<br/>
+**P.S. - This can also be done in alternative manner. Like taking the _id from the req.userId which is added to the req from the auth.js. But anyway...... :)**<br/>
+b) **This is used for fetching all the dishes of the vendor**<br/>
+c) **No Authenication is required for this**<br/>
+
+- ToggleFoodAvailability - <br/>
+a) The id of the  is passed through the req.params<br/>
 
